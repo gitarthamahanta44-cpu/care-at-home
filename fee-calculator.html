@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Calculator — Care At Home</title>
+  <style>
+    /* ---- Basic Reset ---- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ---- Navbar ---- */
+    .navbar {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #4A90D9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: #4A90D9;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px 30px;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: #555;
+      font-size: 14px;
+      padding: 5px 0;
+    }
+
+    /* ---- Buttons ---- */
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: #4A90D9;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2f72b8;
+    }
+
+    .btn-primary:disabled {
+      background-color: #aac8e8;
+      cursor: not-allowed;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #4A90D9;
+      border: 2px solid #4A90D9;
+    }
+
+    .btn-outline:hover {
+      background-color: #4A90D9;
+      color: #fff;
+    }
+
+    .btn-reset {
+      background-color: transparent;
+      color: #888;
+      border: 2px solid #ccc;
+    }
+
+    .btn-reset:hover {
+      border-color: #999;
+      color: #555;
+    }
+
+    /* ---- Hidden ---- */
+    .hidden {
+      display: none;
+    }
+
+    /* ---- Page Header ---- */
+    .page-header {
+      background-color: #e8f2fc;
+      padding: 40px 30px;
+    }
+
+    .page-header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .page-header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .breadcrumb a {
+      color: #888;
+    }
+
+    .breadcrumb a:hover {
+      color: #4A90D9;
+    }
+
+    .breadcrumb span {
+      color: #4A90D9;
+      font-weight: bold;
+    }
+
+    /* ---- Main Layout ---- */
+    .main-layout {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px 40px;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    /* ---- Calculator Panel ---- */
+    .calc-panel {
+      flex: 2;
+      min-width: 300px;
+    }
+
+    .card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 30px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* ---- Form Styles ---- */
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 200px;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: #4A90D9;
+    }
+
+    /* ---- Placeholder ---- */
+    .placeholder-box {
+      border: 2px dashed #ddd;
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+
+    /* ---- Result Card ---- */
+    .result-card {
+      border: 1px solid #c5dff5;
+      border-radius: 12px;
+      margin-top: 25px;
+      overflow: hidden;
+    }
+
+    .result-header {
+      background-color: #4A90D9;
+      color: #fff;
+      padding: 15px 20px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .result-body {
+      padding: 20px;
+      background-color: #fff;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: none;
+    }
+
+    .breakdown-label {
+      color: #888;
+    }
+
+    .breakdown-value {
+      font-weight: bold;
+    }
+
+    .total-box {
+      background-color: #4A90D9;
+      color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .total-box .label {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+
+    .total-box .amount {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .total-box .note {
+      font-size: 12px;
+      opacity: 0.6;
+      margin-top: 5px;
+    }
+
+    .book-cta {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .book-cta p {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    /* ---- Pricing Sidebar ---- */
+    .pricing-sidebar {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .price-section {
+      margin-bottom: 20px;
+    }
+
+    .price-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .price-section-title .emoji {
+      font-size: 20px;
+    }
+
+    .price-section-title p {
+      font-size: 14px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .price-table {
+      width: 100%;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      font-size: 13px;
+    }
+
+    .price-row:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+
+    .price-row .label {
+      color: #888;
+    }
+
+    .price-row .value {
+      font-weight: bold;
+      color: #4A90D9;
+    }
+
+    .price-row .value.green {
+      color: #4CAF80;
+    }
+
+    .transparency-note {
+      background-color: #e8f2fc;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      font-size: 12px;
+      color: #2f72b8;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      background-color: #1a2f4e;
+      color: #fff;
+      padding: 40px 30px 20px;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand {
+      flex: 2;
+      min-width: 250px;
+    }
+
+    .footer-brand h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand p {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .footer-links {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .footer-links h4 {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: #ccc;
+      margin-bottom: 12px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-links ul li a {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .footer-links ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 15px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-bottom p {
+      color: #888;
+      font-size: 13px;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .nav-links,
+      .nav-buttons {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .main-layout {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">Care <span>At Home</span></a>
+    <div class="nav-links">
+      <a href="index.html#hero">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#about">About Us</a>
+      <a href="index.html#contact">Contact Us</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="fee-calculator.html" class="btn btn-primary">Fee Calculator</a>
+      <a href="book-service.html" class="btn btn-outline">Book a Service</a>
+    </div>
+    <button class="hamburger" id="hamburger">&#9776;</button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html#hero">Home</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#about">About Us</a>
+    <a href="index.html#contact">Contact Us</a>
+    <a href="fee-calculator.html">Fee Calculator</a>
+    <a href="book-service.html">Book a Service</a>
+  </div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a> &gt; <span>Fee Calculator</span>
+    </div>
+    <h1>Fee Calculator</h1>
+    <p>Get an instant estimate for your home healthcare service. No hidden charges.</p>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-layout">
+
+    <!-- Calculator Panel -->
+    <div class="calc-panel">
+      <div class="card">
+        <h2>Calculate Your Estimate</h2>
+
+        <form id="calc-form">
+          <div class="form-row">
+            <!-- Service -->
+            <div class="form-group">
+              <label for="calc-service">Select Service *</label>
+              <select id="calc-service" class="form-input" required>
+                <option value="">— Choose a service —</option>
+                <option value="home-nursing-attendant">Home Nursing Attendant</option>
+                <option value="elder-caretaker">Elder Caretaker</option>
+                <option value="post-surgery-wound-dressing">Post-Surgery Wound Dressing</option>
+                <option value="physiotherapy-visits">Physiotherapy Visits at Home</option>
+              </select>
+            </div>
+
+            <!-- Shift Type (for nursing/elder care) -->
+            <div class="form-group hidden" id="calc-shift-wrapper">
+              <label for="calc-shift">Shift Type *</label>
+              <select id="calc-shift" class="form-input">
+                <option value="12hr">12-Hour Duty</option>
+                <option value="24hr">24-Hour Duty</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Number of Days (for shift-based services) -->
+          <div class="form-group hidden" id="calc-days-wrapper">
+            <label for="calc-days">Number of Days *</label>
+            <input type="number" id="calc-days" class="form-input" min="1" max="365" value="1" placeholder="e.g. 7">
+          </div>
+
+          <!-- Number of Visits (for per-visit services) -->
+          <div class="form-group hidden" id="calc-visits-wrapper">
+            <label for="calc-visits">Number of Visits *</label>
+            <input type="number" id="calc-visits" class="form-input" min="1" max="500" value="1" placeholder="e.g. 5">
+          </div>
+
+          <!-- Placeholder -->
+          <div class="placeholder-box" id="calc-nudge">
+            Select a service to begin calculating your estimate
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="submit" class="btn btn-primary" id="calc-btn" disabled>Calculate Total</button>
+            <button type="button" class="btn btn-reset hidden" id="reset-btn">Reset</button>
+          </div>
+        </form>
+
+        <!-- Result -->
+        <div class="result-card hidden" id="result-card">
+          <div class="result-header">Cost Breakdown</div>
+          <div class="result-body">
+            <div id="breakdown-content"></div>
+            <div class="total-box">
+              <div class="label">Total Estimated Cost</div>
+              <div class="amount" id="total-amount"></div>
+              <div class="note">*Indicative estimate. Final price may vary.</div>
+            </div>
+            <div class="book-cta">
+              <p>Ready to book? Let's get started.</p>
+              <a id="book-now-link" href="book-service.html" class="btn btn-primary">Book This Service</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pricing Reference Sidebar -->
+    <div class="pricing-sidebar">
+      <div class="card">
+        <h2 style="font-size: 16px;">Pricing Reference</h2>
+
+        <!-- Nursing -->
+        <div class="price-section">
+          <div class="price-section-title">
+            <span class="emoji">&#129489;&#8205;&#9877;&#65039;</span>
+            <p>Home Nursing Attendant</p>
+          </div>
+          <div class="price-table">
+            <div class="price-row">
+              <span class="label">12-Hour Duty</span>
+              <span class="value">&#8377;1,000/day</span>
+            </div>
+            <div class="price-row">
+              <span class="label">24-Hour Duty</span>
+              <span class="value">&#8377;1,800/day</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Elder -->
+        <div class="price-section">
+          <div class="price-section-title">
+            <span class="emoji">&#128116;</span>
+            <p>Elder Caretaker</p>
+          </div>
+          <div class="price-table">
+            <div class="price-row">
+              <span class="label">12-Hour Duty</span>
+              <span class="value green">&#8377;1,200/day</span>
+            </div>
+            <div class="price-row">
+              <span class="label">24-Hour Duty</span>
+              <span class="value green">&#8377;2,000/day</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wound Dressing -->
+        <div class="price-section">
+          <div class="price-section-title">
+            <span class="emoji">&#129657;</span>
+            <p>Wound Dressing</p>
+          </div>
+          <div class="price-table">
+            <div class="price-row">
+              <span class="label">Per Visit</span>
+              <span class="value">&#8377;500/visit</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Physiotherapy -->
+        <div class="price-section">
+          <div class="price-section-title">
+            <span class="emoji">&#127939;</span>
+            <p>Physiotherapy</p>
+          </div>
+          <div class="price-table">
+            <div class="price-row">
+              <span class="label">Per Visit</span>
+              <span class="value green">&#8377;800/visit</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="transparency-note">
+          All prices are transparent. No hidden charges.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Care At Home</h3>
+        <p>Providing the best in home healthcare services. Expertise, compassion, and care &mdash; right at your doorstep.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html#hero">Home</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="index.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="book-service.html?service=home-nursing-attendant">Home Nursing</a></li>
+          <li><a href="book-service.html?service=elder-caretaker">Elder Caretaker</a></li>
+          <li><a href="book-service.html?service=post-surgery-wound-dressing">Wound Dressing</a></li>
+          <li><a href="book-service.html?service=physiotherapy-visits">Physiotherapy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Care At Home. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // ===== SERVICE DATA =====
+    var services = {
+      "home-nursing-attendant": {
+        name: "Home Nursing Attendant",
+        hasShift: true,
+        rates: { "12hr": 1000, "24hr": 1800 },
+        rateLabel: { "12hr": "₹1,000 / day", "24hr": "₹1,800 / day" },
+        unit: "day"
+      },
+      "elder-caretaker": {
+        name: "Elder Caretaker",
+        hasShift: true,
+        rates: { "12hr": 1200, "24hr": 2000 },
+        rateLabel: { "12hr": "₹1,200 / day", "24hr": "₹2,000 / day" },
+        unit: "day"
+      },
+      "post-surgery-wound-dressing": {
+        name: "Post-Surgery Wound Dressing",
+        hasShift: false,
+        rates: { "default": 500 },
+        rateLabel: { "default": "₹500 / visit" },
+        unit: "visit"
+      },
+      "physiotherapy-visits": {
+        name: "Physiotherapy Visits at Home",
+        hasShift: false,
+        rates: { "default": 800 },
+        rateLabel: { "default": "₹800 / visit" },
+        unit: "visit"
+      }
+    };
+
+    // ===== GET ELEMENTS =====
+    var calcService = document.getElementById("calc-service");
+    var calcShiftWrapper = document.getElementById("calc-shift-wrapper");
+    var calcShift = document.getElementById("calc-shift");
+    var calcDaysWrapper = document.getElementById("calc-days-wrapper");
+    var calcDays = document.getElementById("calc-days");
+    var calcVisitsWrapper = document.getElementById("calc-visits-wrapper");
+    var calcVisits = document.getElementById("calc-visits");
+    var calcNudge = document.getElementById("calc-nudge");
+    var calcBtn = document.getElementById("calc-btn");
+    var resetBtn = document.getElementById("reset-btn");
+    var resultCard = document.getElementById("result-card");
+    var breakdownContent = document.getElementById("breakdown-content");
+    var totalAmount = document.getElementById("total-amount");
+    var bookNowLink = document.getElementById("book-now-link");
+
+    // ===== SERVICE CHANGE =====
+    calcService.addEventListener("change", function () {
+      var key = calcService.value;
+
+      if (!key) {
+        calcShiftWrapper.classList.add("hidden");
+        calcDaysWrapper.classList.add("hidden");
+        calcVisitsWrapper.classList.add("hidden");
+        calcNudge.classList.remove("hidden");
+        calcBtn.disabled = true;
+        return;
+      }
+
+      var s = services[key];
+      calcNudge.classList.add("hidden");
+
+      if (s.hasShift) {
+        calcShiftWrapper.classList.remove("hidden");
+        calcDaysWrapper.classList.remove("hidden");
+        calcVisitsWrapper.classList.add("hidden");
+      } else {
+        calcShiftWrapper.classList.add("hidden");
+        calcDaysWrapper.classList.add("hidden");
+        calcVisitsWrapper.classList.remove("hidden");
+      }
+
+      calcBtn.disabled = false;
+    });
+
+    // ===== CALCULATE =====
+    document.getElementById("calc-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var key = calcService.value;
+      if (!key) return;
+
+      var s = services[key];
+      var shift = s.hasShift ? calcShift.value : "default";
+      var rate = s.rates[shift];
+      var rLabel = s.rateLabel[shift];
+
+      // Get quantity (days or visits)
+      var qty;
+      if (s.hasShift) {
+        qty = parseInt(calcDays.value) || 1;
+        if (qty < 1) qty = 1;
+      } else {
+        qty = parseInt(calcVisits.value) || 1;
+        if (qty < 1) qty = 1;
+      }
+
+      var shiftText = s.hasShift ? calcShift.options[calcShift.selectedIndex].text : null;
+      var total = rate * qty;
+
+      // Build breakdown rows
+      var html = "";
+
+      html += '<div class="breakdown-row">';
+      html += '  <span class="breakdown-label">Service</span>';
+      html += '  <span class="breakdown-value">' + s.name + '</span>';
+      html += '</div>';
+
+      if (shiftText) {
+        html += '<div class="breakdown-row">';
+        html += '  <span class="breakdown-label">Shift Type</span>';
+        html += '  <span class="breakdown-value">' + shiftText + '</span>';
+        html += '</div>';
+      }
+
+      html += '<div class="breakdown-row">';
+      html += '  <span class="breakdown-label">Rate</span>';
+      html += '  <span class="breakdown-value" style="color: #4A90D9;">' + rLabel + '</span>';
+      html += '</div>';
+
+      var durationLabel = s.hasShift ? "Duration" : "Number of Visits";
+      var durationValue = s.hasShift
+        ? qty + " day" + (qty > 1 ? "s" : "")
+        : qty + " visit" + (qty > 1 ? "s" : "");
+
+      html += '<div class="breakdown-row">';
+      html += '  <span class="breakdown-label">' + durationLabel + '</span>';
+      html += '  <span class="breakdown-value">' + durationValue + '</span>';
+      html += '</div>';
+
+      breakdownContent.innerHTML = html;
+      totalAmount.textContent = "₹" + total.toLocaleString("en-IN");
+      bookNowLink.href = "book-service.html?service=" + key;
+
+      resultCard.classList.remove("hidden");
+      resetBtn.classList.remove("hidden");
+    });
+
+    // ===== RESET =====
+    resetBtn.addEventListener("click", function () {
+      calcService.value = "";
+      calcShiftWrapper.classList.add("hidden");
+      calcDaysWrapper.classList.add("hidden");
+      calcVisitsWrapper.classList.add("hidden");
+      calcDays.value = 1;
+      calcVisits.value = 1;
+      calcShift.value = "12hr";
+      calcNudge.classList.remove("hidden");
+      calcBtn.disabled = true;
+      resultCard.classList.add("hidden");
+      resetBtn.classList.add("hidden");
+      window.scrollTo(0, 0);
+    });
+
+    // ===== MOBILE MENU =====
+    var hamburger = document.getElementById("hamburger");
+    var mobileMenu = document.getElementById("mobile-menu");
+
+    hamburger.addEventListener("click", function () {
+      if (mobileMenu.classList.contains("open")) {
+        mobileMenu.classList.remove("open");
+        hamburger.innerHTML = "&#9776;";
+      } else {
+        mobileMenu.classList.add("open");
+        hamburger.innerHTML = "&#10005;";
+      }
+    });
+  </script>
+
+</body>
+</html>

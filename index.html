@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Care At Home — Quality Home Healthcare Services</title>
+  <style>
+    /* ---- Basic Reset ---- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ---- Navbar ---- */
+    .navbar {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #4A90D9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: #4A90D9;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ---- Buttons ---- */
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: #4A90D9;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2f72b8;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #4A90D9;
+      border: 2px solid #4A90D9;
+    }
+
+    .btn-outline:hover {
+      background-color: #4A90D9;
+      color: #fff;
+    }
+
+    .btn-green {
+      background-color: #4CAF80;
+      color: #fff;
+    }
+
+    .btn-green:hover {
+      background-color: #38895f;
+    }
+
+    /* ---- Hamburger Menu (Mobile) ---- */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px 30px;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: #555;
+      font-size: 14px;
+      padding: 5px 0;
+    }
+
+    /* ---- Hero Section ---- */
+    .hero {
+      background-color: #1a2f4e;
+      color: #fff;
+      padding: 80px 30px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 span {
+      color: #4CAF80;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #bbb;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background-color: rgba(255, 255, 255, 0.08);
+      padding: 20px 30px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .stat-card h3 {
+      font-size: 28px;
+      color: #4A90D9;
+    }
+
+    .stat-card p {
+      font-size: 13px;
+      color: #999;
+      margin-top: 5px;
+    }
+
+    /* ---- Section Styles ---- */
+    .section {
+      padding: 60px 30px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      color: #666;
+    }
+
+    /* ---- Services Grid ---- */
+    .services-grid {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .service-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 25px;
+      width: 240px;
+      text-align: center;
+    }
+
+    .service-card:hover {
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-card .emoji {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    .service-card h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .service-card p {
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .service-card .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #4A90D9;
+      margin-bottom: 15px;
+    }
+
+    .service-card .price span {
+      font-size: 13px;
+      font-weight: normal;
+      color: #999;
+    }
+
+    /* ---- About Section ---- */
+    .about-section {
+      background-color: #f5f5f5;
+      padding: 60px 30px;
+    }
+
+    .about-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .about-values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .value-card {
+      background-color: #e8f2fc;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      width: 130px;
+    }
+
+    .value-card .emoji {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .value-card p {
+      font-size: 13px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .about-text {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .about-text h2 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .about-text h2 span {
+      color: #4A90D9;
+    }
+
+    .about-text p {
+      color: #666;
+      margin-bottom: 20px;
+    }
+
+    .about-text ul {
+      list-style: none;
+    }
+
+    .about-text ul li {
+      padding: 5px 0;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .about-text ul li::before {
+      content: "✓ ";
+      color: #4CAF80;
+      font-weight: bold;
+    }
+
+    /* ---- Contact Section ---- */
+    .contact-grid {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .contact-info {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .contact-info h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .contact-info h2 span {
+      color: #4A90D9;
+    }
+
+    .contact-info > p {
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .contact-item {
+      margin-bottom: 18px;
+    }
+
+    .contact-item strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .contact-item span {
+      color: #666;
+      font-size: 13px;
+    }
+
+    .contact-form-wrap {
+      flex: 1;
+      min-width: 280px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 30px;
+    }
+
+    .contact-form-wrap h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    /* ---- Form Styles ---- */
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 200px;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: #4A90D9;
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .success-msg {
+      display: none;
+      background-color: #e8f7ef;
+      border: 1px solid #4CAF80;
+      color: #38895f;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      background-color: #1a2f4e;
+      color: #fff;
+      padding: 40px 30px 20px;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand {
+      flex: 2;
+      min-width: 250px;
+    }
+
+    .footer-brand h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand p {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .footer-links {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .footer-links h4 {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: #ccc;
+      margin-bottom: 12px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-links ul li a {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .footer-links ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 15px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-bottom p {
+      color: #888;
+      font-size: 13px;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .nav-links,
+      .nav-buttons {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .service-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">Care <span>At Home</span></a>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#services">Services</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact Us</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="fee-calculator.html" class="btn btn-outline">Fee Calculator</a>
+      <a href="book-service.html" class="btn btn-primary">Book a Service</a>
+    </div>
+    <button class="hamburger" id="hamburger">&#9776;</button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#hero">Home</a>
+    <a href="#services">Services</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact Us</a>
+    <a href="fee-calculator.html">Fee Calculator</a>
+    <a href="book-service.html">Book a Service</a>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="hero" class="hero">
+    <h1>Book a Service for <span>Your Loved One</span></h1>
+    <p>Get all your home healthcare needs at one place. Providing the best in health at your doorstep. We take care of you with expertise and compassion.</p>
+    <div class="hero-buttons">
+      <a href="book-service.html" class="btn btn-primary">Book a Service</a>
+      <a href="#services" class="btn btn-outline" style="border-color: #fff; color: #fff;">Our Services &rarr;</a>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <h3>500+</h3>
+        <p>Happy Families</p>
+      </div>
+      <div class="stat-card">
+        <h3>200+</h3>
+        <p>Trained Caregivers</p>
+      </div>
+      <div class="stat-card">
+        <h3>4</h3>
+        <p>Core Services</p>
+      </div>
+      <div class="stat-card">
+        <h3>98%</h3>
+        <p>Satisfaction Rate</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SERVICES SECTION ===== -->
+  <section id="services" class="section">
+    <div class="section-title">
+      <h2>Our Services</h2>
+      <p>Professional healthcare delivered with compassion, right at your doorstep.</p>
+    </div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="emoji">&#129489;&#8205;&#9877;&#65039;</div>
+        <h3>Home Nursing Attendant</h3>
+        <p>Professional care at home for 12 or 24 hours.</p>
+        <div class="price">&#8377;1,000<span>/day</span></div>
+        <a href="book-service.html?service=home-nursing-attendant" class="btn btn-primary">Book Now</a>
+      </div>
+
+      <div class="service-card">
+        <div class="emoji">&#128116;</div>
+        <h3>Elder Caretaker</h3>
+        <p>Comprehensive support for seniors, 12 or 24 hours.</p>
+        <div class="price" style="color: #4CAF80;">&#8377;1,200<span>/day</span></div>
+        <a href="book-service.html?service=elder-caretaker" class="btn btn-green">Book Now</a>
+      </div>
+
+      <div class="service-card">
+        <div class="emoji">&#129657;</div>
+        <h3>Post-Surgery Wound Dressing</h3>
+        <p>Certified nurse visits for wound care and dressing.</p>
+        <div class="price">&#8377;500<span>/visit</span></div>
+        <a href="book-service.html?service=post-surgery-wound-dressing" class="btn btn-primary">Book Now</a>
+      </div>
+
+      <div class="service-card">
+        <div class="emoji">&#127939;</div>
+        <h3>Physiotherapy at Home</h3>
+        <p>Licensed physiotherapist visits for rehabilitation.</p>
+        <div class="price" style="color: #4CAF80;">&#8377;800<span>/visit</span></div>
+        <a href="book-service.html?service=physiotherapy-visits" class="btn btn-green">Book Now</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== ABOUT US SECTION ===== -->
+  <section id="about" class="about-section">
+    <div class="about-content">
+      <div class="about-values">
+        <div class="value-card">
+          <div class="emoji">&#10084;&#65039;</div>
+          <p>Compassionate Care</p>
+        </div>
+        <div class="value-card" style="background-color: #e8f7ef;">
+          <div class="emoji">&#129658;</div>
+          <p>Medical Expertise</p>
+        </div>
+        <div class="value-card" style="background-color: #e8f7ef;">
+          <div class="emoji">&#127968;</div>
+          <p>Home Comfort</p>
+        </div>
+        <div class="value-card">
+          <div class="emoji">&#11088;</div>
+          <p>Quality Assured</p>
+        </div>
+      </div>
+      <div class="about-text">
+        <h2>Delivering Healthcare with <span>Heart &amp; Expertise</span></h2>
+        <p>We are a team of dedicated professionals who are passionate about providing quality healthcare services. We believe everyone deserves to receive the best possible care, delivered with expertise and compassion.</p>
+        <ul>
+          <li>Certified and background-verified caregivers</li>
+          <li>Flexible 12-hour and 24-hour care options</li>
+          <li>Personalized care plans tailored to each patient</li>
+          <li>Transparent pricing — no hidden charges</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT SECTION ===== -->
+  <section id="contact" class="section">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2>Get in Touch <span>With Us</span></h2>
+        <p>Have questions or need help choosing the right service? Our team is here to assist you.</p>
+        <div class="contact-item">
+          <strong>Phone</strong>
+          <span>+91 98737 43210</span>
+        </div>
+        <div class="contact-item">
+          <strong>Email</strong>
+          <span>support@careathome.in</span>
+        </div>
+        <div class="contact-item">
+          <strong>Support Hours</strong>
+          <span>Mon &ndash; Sun, 6 AM &ndash; 10 PM</span>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap">
+        <h3>Send us a Message</h3>
+        <form id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contact-name">Full Name *</label>
+              <input type="text" id="contact-name" class="form-input" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Email Address *</label>
+              <input type="email" id="contact-email" class="form-input" placeholder="you@email.com" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="contact-phone">Phone Number</label>
+            <input type="tel" id="contact-phone" class="form-input" placeholder="+91 98765 43210">
+          </div>
+          <div class="form-group">
+            <label for="contact-message">Message *</label>
+            <textarea id="contact-message" class="form-input" placeholder="How can we help you?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+        </form>
+        <div class="success-msg" id="contact-success">
+          &#10003; Thank you! We'll get back to you shortly.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Care At Home</h3>
+        <p>Providing the best in home healthcare services. Expertise, compassion, and care &mdash; right at your doorstep.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="book-service.html?service=home-nursing-attendant">Home Nursing</a></li>
+          <li><a href="book-service.html?service=elder-caretaker">Elder Caretaker</a></li>
+          <li><a href="book-service.html?service=post-surgery-wound-dressing">Wound Dressing</a></li>
+          <li><a href="book-service.html?service=physiotherapy-visits">Physiotherapy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Care At Home. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // --- Mobile menu toggle ---
+    var hamburger = document.getElementById("hamburger");
+    var mobileMenu = document.getElementById("mobile-menu");
+
+    hamburger.addEventListener("click", function () {
+      if (mobileMenu.classList.contains("open")) {
+        mobileMenu.classList.remove("open");
+        hamburger.innerHTML = "&#9776;";
+      } else {
+        mobileMenu.classList.add("open");
+        hamburger.innerHTML = "&#10005;";
+      }
+    });
+
+    // --- Contact form submission ---
+    var contactForm = document.getElementById("contact-form");
+    var contactSuccess = document.getElementById("contact-success");
+
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      contactForm.reset();
+      contactSuccess.style.display = "block";
+      setTimeout(function () {
+        contactSuccess.style.display = "none";
+      }, 4000);
+    });
+  </script>
+
+</body>
+</html>

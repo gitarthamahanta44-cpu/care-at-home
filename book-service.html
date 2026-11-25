@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Service — Care At Home</title>
+  <style>
+    /* ---- Basic Reset ---- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      line-height: 1.6;
+      background-color: #f5f5f5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ---- Navbar ---- */
+    .navbar {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .logo span {
+      color: #4A90D9;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .nav-links a:hover {
+      color: #4A90D9;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px 30px;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: #555;
+      font-size: 14px;
+      padding: 5px 0;
+    }
+
+    /* ---- Buttons ---- */
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: #4A90D9;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2f72b8;
+    }
+
+    .btn-primary:disabled {
+      background-color: #aac8e8;
+      cursor: not-allowed;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: #4A90D9;
+      border: 2px solid #4A90D9;
+    }
+
+    .btn-outline:hover {
+      background-color: #4A90D9;
+      color: #fff;
+    }
+
+    .btn-green {
+      background-color: #4CAF80;
+      color: #fff;
+    }
+
+    .btn-green:hover {
+      background-color: #38895f;
+    }
+
+    /* ---- Page Header ---- */
+    .page-header {
+      background-color: #e8f2fc;
+      padding: 40px 30px;
+    }
+
+    .page-header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .page-header p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .breadcrumb {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 10px;
+    }
+
+    .breadcrumb a {
+      color: #888;
+    }
+
+    .breadcrumb a:hover {
+      color: #4A90D9;
+    }
+
+    .breadcrumb span {
+      color: #4A90D9;
+      font-weight: bold;
+    }
+
+    /* ---- Main Container ---- */
+    .main-container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 20px 40px;
+    }
+
+    /* ---- Step Indicator ---- */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+      gap: 8px;
+    }
+
+    .step-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      color: #fff;
+      background-color: #ccc;
+    }
+
+    .step-dot.active {
+      background-color: #4A90D9;
+    }
+
+    .step-dot.done {
+      background-color: #4CAF80;
+    }
+
+    .step-line {
+      flex: 1;
+      height: 3px;
+      background-color: #ddd;
+    }
+
+    .step-line.done {
+      background-color: #4CAF80;
+    }
+
+    .step-label {
+      margin-left: 12px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #4A90D9;
+    }
+
+    /* ---- Card Container ---- */
+    .card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 30px;
+    }
+
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* ---- Hidden Utility ---- */
+    .hidden {
+      display: none;
+    }
+
+    /* ---- Form Styles ---- */
+    .form-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      flex: 1;
+      min-width: 200px;
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: #4A90D9;
+    }
+
+    /* ---- Service Info Box ---- */
+    .service-info-box {
+      background-color: #e8f2fc;
+      border: 1px solid #c5dff5;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .service-info-box h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .service-info-box p {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .service-info-box .price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2f72b8;
+    }
+
+    /* ---- Placeholder (no service selected) ---- */
+    .placeholder-box {
+      border: 2px dashed #ddd;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+
+    /* ---- Summary Bar ---- */
+    .summary-bar {
+      background-color: #e8f2fc;
+      border: 1px solid #c5dff5;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .summary-bar .service-name {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .summary-bar .service-price {
+      color: #2f72b8;
+      font-weight: bold;
+    }
+
+    .summary-bar .change-btn {
+      background: none;
+      border: none;
+      color: #4A90D9;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .summary-bar .change-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* ---- Nurse Grid ---- */
+    .nurse-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .nurse-card {
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      padding: 15px;
+      width: 260px;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    .nurse-card:hover {
+      border-color: #4A90D9;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .nurse-card.selected {
+      border-color: #4CAF80;
+      background-color: #f0fbf5;
+    }
+
+    .nurse-photo {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      margin-bottom: 10px;
+    }
+
+    .nurse-card h3 {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .nurse-card .rating {
+      color: #f59e0b;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .nurse-card .details {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .nurse-card .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: bold;
+      background-color: #e8f2fc;
+      color: #2f72b8;
+      border: 1px solid #c5dff5;
+    }
+
+    .badge-green {
+      background-color: #e8f7ef;
+      color: #38895f;
+      border-color: #b3dfc5;
+    }
+
+    .nurse-select-btn {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid #4A90D9;
+      border-radius: 20px;
+      background-color: transparent;
+      color: #4A90D9;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+    }
+
+    .nurse-select-btn:hover {
+      background-color: #4A90D9;
+      color: #fff;
+    }
+
+    .nurse-select-btn.selected-state {
+      background-color: #4CAF80;
+      border-color: #4CAF80;
+      color: #fff;
+    }
+
+    /* ---- Button Row ---- */
+    .button-row {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    /* ---- Success Message ---- */
+    .success-card {
+      background-color: #fff;
+      border: 1px solid #4CAF80;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .success-card h2 {
+      font-size: 24px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .success-card p {
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .success-card .nurse-info {
+      color: #4CAF80;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .success-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    /* ---- Empty State ---- */
+    .empty-state {
+      border: 2px dashed #ddd;
+      border-radius: 10px;
+      padding: 40px;
+      text-align: center;
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+
+    /* ---- Footer ---- */
+    .footer {
+      background-color: #1a2f4e;
+      color: #fff;
+      padding: 40px 30px 20px;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .footer-brand {
+      flex: 2;
+      min-width: 250px;
+    }
+
+    .footer-brand h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .footer-brand p {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .footer-links {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .footer-links h4 {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: #ccc;
+      margin-bottom: 12px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-links ul li a {
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .footer-links ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 15px;
+      text-align: center;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-bottom p {
+      color: #888;
+      font-size: 13px;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 768px) {
+      .nav-links,
+      .nav-buttons {
+        display: none;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .nurse-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">Care <span>At Home</span></a>
+    <div class="nav-links">
+      <a href="index.html#hero">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#about">About Us</a>
+      <a href="index.html#contact">Contact Us</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="fee-calculator.html" class="btn btn-outline">Fee Calculator</a>
+      <a href="book-service.html" class="btn btn-primary">Book a Service</a>
+    </div>
+    <button class="hamburger" id="hamburger">&#9776;</button>
+  </nav>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html#hero">Home</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#about">About Us</a>
+    <a href="index.html#contact">Contact Us</a>
+    <a href="fee-calculator.html">Fee Calculator</a>
+    <a href="book-service.html">Book a Service</a>
+  </div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="page-header">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a> &gt; <span>Book a Service</span>
+    </div>
+    <h1>Book a Service</h1>
+    <p>Select your preferred service and fill in patient details. We'll reach out to confirm your booking.</p>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-container">
+
+    <!-- Step Indicator -->
+    <div class="step-indicator" id="step-indicator">
+      <div class="step-dot active" id="step1-dot">1</div>
+      <div class="step-line" id="step-line-1"></div>
+      <div class="step-dot" id="step2-dot">2</div>
+      <div class="step-line" id="step-line-2"></div>
+      <div class="step-dot" id="step3-dot">3</div>
+      <span class="step-label" id="step-label">Step 1 of 3 &mdash; Service Selection</span>
+    </div>
+
+    <!-- ===== STEP 1: Service Selection ===== -->
+    <div class="card" id="step1">
+      <h2>1. Select Your Service</h2>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="service-select">Select Service *</label>
+          <select id="service-select" class="form-input" required>
+            <option value="">— Choose a service —</option>
+            <option value="home-nursing-attendant">Home Nursing Attendant</option>
+            <option value="elder-caretaker">Elder Caretaker</option>
+            <option value="post-surgery-wound-dressing">Post-Surgery Wound Dressing</option>
+            <option value="physiotherapy-visits">Physiotherapy Visits at Home</option>
+          </select>
+        </div>
+        <div class="form-group hidden" id="shift-wrapper">
+          <label for="shift-select">Shift Type *</label>
+          <select id="shift-select" class="form-input">
+            <option value="12hr">12-Hour Duty</option>
+            <option value="24hr">24-Hour Duty</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Service Info (shown after selection) -->
+      <div class="service-info-box hidden" id="service-info">
+        <h3 id="service-title"></h3>
+        <p id="service-desc"></p>
+        <div class="price" id="service-price"></div>
+      </div>
+
+      <!-- Placeholder (shown when nothing selected) -->
+      <div class="placeholder-box" id="service-placeholder">
+        Select a service above to see details and pricing
+      </div>
+
+      <div style="text-align: right;">
+        <button class="btn btn-primary" id="next-btn" disabled>Continue &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2: Patient Details ===== -->
+    <div class="card hidden" id="step2">
+      <h2>2. Patient Details</h2>
+
+      <!-- Selected service summary -->
+      <div class="summary-bar">
+        <div>
+          <small style="color: #888;">Selected Service</small><br>
+          <span class="service-name" id="summary-service"></span>
+          <span class="service-price" id="summary-price"></span>
+        </div>
+        <button class="change-btn" id="change-service-btn">Change</button>
+      </div>
+
+      <form id="booking-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="book-name">Patient Full Name *</label>
+            <input type="text" id="book-name" class="form-input" placeholder="e.g. Anand Mishra" required>
+          </div>
+          <div class="form-group">
+            <label for="book-age">Patient Age *</label>
+            <input type="number" id="book-age" class="form-input" placeholder="e.g. 67" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="book-email">Email Address *</label>
+            <input type="email" id="book-email" class="form-input" placeholder="you@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="book-phone">Phone Number *</label>
+            <input type="tel" id="book-phone" class="form-input" placeholder="+91 98765 43210" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="book-address">Address *</label>
+            <input type="text" id="book-address" class="form-input" placeholder="House / Flat, Street, Area" required>
+          </div>
+          <div class="form-group">
+            <label for="book-city">City *</label>
+            <input type="text" id="book-city" class="form-input" placeholder="e.g. Mumbai" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="book-state">State *</label>
+            <input type="text" id="book-state" class="form-input" placeholder="e.g. Maharashtra" required>
+          </div>
+          <div class="form-group">
+            <label for="book-zip">ZIP Code *</label>
+            <input type="text" id="book-zip" class="form-input" placeholder="e.g. 400001" required>
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="btn btn-outline" id="back-btn">&larr; Back</button>
+          <button type="button" class="btn btn-primary" id="to-step3-btn">Continue &rarr;</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ===== STEP 3: Choose Your Nurse ===== -->
+    <div class="card hidden" id="step3">
+      <h2>3. Choose Your Nurse</h2>
+      <p style="color: #666; font-size: 14px; margin-bottom: 20px;">All nurses are verified, certified, and matched to your selected service.</p>
+
+      <!-- Service + Price summary -->
+      <div class="summary-bar">
+        <div>
+          <small style="color: #888;">Selected Service</small><br>
+          <span class="service-name" id="step3-summary-service"></span>
+        </div>
+        <span class="service-price" id="step3-price-text" style="font-size: 16px;"></span>
+      </div>
+
+      <!-- Nurse Cards -->
+      <div class="nurse-grid" id="nurse-grid"></div>
+
+      <!-- Empty state -->
+      <div class="empty-state hidden" id="no-nurses">
+        <p><strong>No nurses available</strong></p>
+        <p>No nurses match the selected service and shift. Please go back and adjust your selection.</p>
+      </div>
+
+      <div class="button-row">
+        <button type="button" class="btn btn-outline" id="back-to-step2-btn">&larr; Back</button>
+        <button type="button" class="btn btn-primary" id="confirm-nurse-btn" disabled>Confirm Booking</button>
+      </div>
+    </div>
+
+    <!-- ===== Success Message ===== -->
+    <div class="success-card hidden" id="booking-success">
+      <div class="success-icon">&#10004;</div>
+      <h2>Booking Submitted!</h2>
+      <p>Your booking has been submitted successfully! We will contact you shortly to confirm the details.</p>
+      <p class="nurse-info" id="success-nurse-info"></p>
+      <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+        <a href="index.html" class="btn btn-primary">Back to Home</a>
+        <button class="btn btn-outline" id="book-another">Book Another Service</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3>Care At Home</h3>
+        <p>Providing the best in home healthcare services. Expertise, compassion, and care &mdash; right at your doorstep.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html#hero">Home</a></li>
+          <li><a href="index.html#services">Services</a></li>
+          <li><a href="index.html#about">About Us</a></li>
+          <li><a href="index.html#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="book-service.html?service=home-nursing-attendant">Home Nursing</a></li>
+          <li><a href="book-service.html?service=elder-caretaker">Elder Caretaker</a></li>
+          <li><a href="book-service.html?service=post-surgery-wound-dressing">Wound Dressing</a></li>
+          <li><a href="book-service.html?service=physiotherapy-visits">Physiotherapy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Care At Home. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // ===== SERVICE DATA =====
+    var services = {
+      "home-nursing-attendant": {
+        name: "Home Nursing Attendant",
+        specialty: "Home Nursing Attendant",
+        description: "We provide trained and compassionate home nursing attendants for both 12-hour and 24-hour shifts. Our attendants assist with daily activities, medication reminders, mobility support, and companionship.",
+        hasShift: true,
+        prices: { "12hr": "₹1,000 / day", "24hr": "₹1,800 / day" }
+      },
+      "elder-caretaker": {
+        name: "Elder Caretaker",
+        specialty: "Elder Caretaker",
+        description: "Our elder caretakers offer comprehensive support for seniors — meal preparation, personal care, light housekeeping, companionship, and health monitoring. Available in 12 and 24 hour care.",
+        hasShift: true,
+        prices: { "12hr": "₹1,200 / day", "24hr": "₹2,000 / day" }
+      },
+      "post-surgery-wound-dressing": {
+        name: "Post-Surgery Wound Dressing",
+        specialty: "Post-Surgery Wound Dressing",
+        description: "Professional wound care services by certified nurses at your doorstep. We handle post-surgical wound dressing, dressing changes, and wound care to promote healing and prevent infections.",
+        hasShift: false,
+        prices: { "default": "₹500 / visit" }
+      },
+      "physiotherapy-visits": {
+        name: "Physiotherapy Visits at Home",
+        specialty: "Physiotherapy Visits at Home",
+        description: "Receive expert physiotherapy care at home. Our licensed physiotherapists provide personalized treatment plans including therapeutic exercises, manual therapy, and rehabilitation programs.",
+        hasShift: false,
+        prices: { "default": "₹800 / visit" }
+      }
+    };
+
+    var shiftLabels = { "12hr": "12-Hour Duty", "24hr": "24-Hour Duty" };
+
+    // ===== NURSE DATA =====
+    var allNurses = [];
+    var selectedNurse = null;
+
+    // Load nurse data from JSON file
+    function loadNurses() {
+      fetch("assets/nurse_details.json")
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          allNurses = data;
+        })
+        .catch(function (error) {
+          console.log("Error loading nurse data:", error);
+        });
+    }
+
+    // ===== GET ELEMENTS =====
+    var serviceSelect = document.getElementById("service-select");
+    var shiftWrapper = document.getElementById("shift-wrapper");
+    var shiftSelect = document.getElementById("shift-select");
+    var serviceInfo = document.getElementById("service-info");
+    var servicePlaceholder = document.getElementById("service-placeholder");
+    var nextBtn = document.getElementById("next-btn");
+
+    var step1 = document.getElementById("step1");
+    var step2 = document.getElementById("step2");
+    var step3 = document.getElementById("step3");
+
+    var step1Dot = document.getElementById("step1-dot");
+    var step2Dot = document.getElementById("step2-dot");
+    var step3Dot = document.getElementById("step3-dot");
+    var stepLine1 = document.getElementById("step-line-1");
+    var stepLine2 = document.getElementById("step-line-2");
+    var stepLabel = document.getElementById("step-label");
+    var stepIndicator = document.getElementById("step-indicator");
+
+    var summaryService = document.getElementById("summary-service");
+    var summaryPrice = document.getElementById("summary-price");
+
+    var backBtn = document.getElementById("back-btn");
+    var changeBtn = document.getElementById("change-service-btn");
+    var toStep3Btn = document.getElementById("to-step3-btn");
+    var backToStep2Btn = document.getElementById("back-to-step2-btn");
+    var confirmNurseBtn = document.getElementById("confirm-nurse-btn");
+
+    var nurseGrid = document.getElementById("nurse-grid");
+    var noNurses = document.getElementById("no-nurses");
+
+    var bookingForm = document.getElementById("booking-form");
+    var bookingSuccess = document.getElementById("booking-success");
+    var bookAnother = document.getElementById("book-another");
+    var successNurseInfo = document.getElementById("success-nurse-info");
+
+    // ===== HELPER FUNCTIONS =====
+
+    // Get the price text for a service
+    function getPrice(serviceKey) {
+      if (!serviceKey) return "";
+      var s = services[serviceKey];
+      if (!s) return "";
+      if (s.hasShift) {
+        return s.prices[shiftSelect.value] || s.prices["12hr"];
+      }
+      return s.prices["default"];
+    }
+
+    // Update the service info box when selection changes
+    function updateServiceInfo() {
+      var key = serviceSelect.value;
+
+      if (!key) {
+        serviceInfo.classList.add("hidden");
+        servicePlaceholder.classList.remove("hidden");
+        shiftWrapper.classList.add("hidden");
+        nextBtn.disabled = true;
+        return;
+      }
+
+      var s = services[key];
+
+      // Show or hide shift dropdown
+      if (s.hasShift) {
+        shiftWrapper.classList.remove("hidden");
+      } else {
+        shiftWrapper.classList.add("hidden");
+      }
+
+      // Fill in service info
+      document.getElementById("service-title").textContent = s.name;
+      document.getElementById("service-desc").textContent = s.description;
+      document.getElementById("service-price").textContent = getPrice(key);
+
+      // Show info box, hide placeholder
+      servicePlaceholder.classList.add("hidden");
+      serviceInfo.classList.remove("hidden");
+      nextBtn.disabled = false;
+    }
+
+    // Update the step indicator dots and label
+    function setStepIndicator(step) {
+      var labels = ["Service Selection", "Patient Details", "Choose Your Nurse"];
+      stepLabel.textContent = "Step " + step + " of 3 — " + labels[step - 1];
+
+      var dots = [step1Dot, step2Dot, step3Dot];
+      var lines = [stepLine1, stepLine2];
+
+      for (var i = 0; i < 3; i++) {
+        var n = i + 1;
+        dots[i].className = "step-dot";
+
+        if (n < step) {
+          dots[i].classList.add("done");
+          dots[i].textContent = "✓";
+        } else if (n === step) {
+          dots[i].classList.add("active");
+          dots[i].textContent = n;
+        } else {
+          dots[i].textContent = n;
+        }
+      }
+
+      // Color the lines between dots
+      stepLine1.className = step > 1 ? "step-line done" : "step-line";
+      stepLine2.className = step > 2 ? "step-line done" : "step-line";
+    }
+
+    // Filter nurses based on selected service and shift
+    function filterNurses() {
+      var key = serviceSelect.value;
+      if (!key) return [];
+      var svc = services[key];
+      var selectedSpecialty = svc.specialty;
+      var selectedShiftLabel = svc.hasShift ? shiftLabels[shiftSelect.value] : null;
+
+      var result = [];
+      for (var i = 0; i < allNurses.length; i++) {
+        var nurse = allNurses[i];
+
+        // Check if nurse has the right specialty
+        if (!nurse.specialties || nurse.specialties.indexOf(selectedSpecialty) === -1) {
+          continue;
+        }
+
+        // Check shift compatibility
+        if (selectedShiftLabel && nurse.shift && nurse.shift.length > 0) {
+          if (nurse.shift.indexOf(selectedShiftLabel) === -1) {
+            continue;
+          }
+        }
+
+        result.push(nurse);
+      }
+      return result;
+    }
+
+    // Build star rating text (using ★ and ☆)
+    function getStars(rating) {
+      var full = Math.floor(rating);
+      var stars = "";
+      for (var i = 0; i < full; i++) {
+        stars += "★";
+      }
+      for (var i = full; i < 5; i++) {
+        stars += "☆";
+      }
+      return stars;
+    }
+
+    // Render nurse cards into the grid
+    function renderNurses() {
+      var nurses = filterNurses();
+      nurseGrid.innerHTML = "";
+
+      if (nurses.length === 0) {
+        nurseGrid.classList.add("hidden");
+        noNurses.classList.remove("hidden");
+        confirmNurseBtn.disabled = true;
+        return;
+      }
+
+      nurseGrid.classList.remove("hidden");
+      noNurses.classList.add("hidden");
+
+      for (var i = 0; i < nurses.length; i++) {
+        var nurse = nurses[i];
+        var isSelected = selectedNurse && selectedNurse.name === nurse.name;
+
+        // Create card element
+        var card = document.createElement("div");
+        card.className = "nurse-card" + (isSelected ? " selected" : "");
+        card.setAttribute("data-nurse", nurse.name);
+
+        // Build certification badges
+        var certHTML = "";
+        if (nurse.certifications) {
+          for (var j = 0; j < nurse.certifications.length; j++) {
+            certHTML += '<span class="badge">' + nurse.certifications[j] + "</span>";
+          }
+        }
+
+        // Build specialty badges
+        if (nurse.specialties) {
+          for (var j = 0; j < nurse.specialties.length; j++) {
+            certHTML += '<span class="badge badge-green">' + nurse.specialties[j] + "</span>";
+          }
+        }
+
+        // Languages
+        var langs = nurse.languages ? nurse.languages.join(", ") : "";
+
+        // Card HTML
+        card.innerHTML =
+          '<img class="nurse-photo" src="' + nurse.photo + '" alt="' + nurse.name + '">' +
+          "<h3>" + nurse.name + "</h3>" +
+          '<div class="rating">' + getStars(nurse.rating) + " " + nurse.rating.toFixed(1) + " (" + nurse.reviewCount + " reviews)</div>" +
+          '<div class="details">' + nurse.experienceYears + " years experience &middot; " + langs + "</div>" +
+          '<div class="badges">' + certHTML + "</div>" +
+          '<button class="nurse-select-btn' + (isSelected ? " selected-state" : "") + '" data-nurse="' + nurse.name + '">' +
+          (isSelected ? "✓ Selected" : "Select") + "</button>";
+
+        // Click handler (using closure to capture nurse)
+        (function (n) {
+          card.addEventListener("click", function () {
+            selectNurse(n);
+          });
+        })(nurse);
+
+        nurseGrid.appendChild(card);
+      }
+    }
+
+    // Handle nurse selection
+    function selectNurse(nurse) {
+      selectedNurse = nurse;
+      confirmNurseBtn.disabled = false;
+
+      // Update all cards
+      var cards = document.querySelectorAll(".nurse-card");
+      for (var i = 0; i < cards.length; i++) {
+        var cardName = cards[i].getAttribute("data-nurse");
+        var btn = cards[i].querySelector(".nurse-select-btn");
+
+        if (cardName === nurse.name) {
+          cards[i].classList.add("selected");
+          btn.classList.add("selected-state");
+          btn.textContent = "✓ Selected";
+        } else {
+          cards[i].classList.remove("selected");
+          btn.classList.remove("selected-state");
+          btn.textContent = "Select";
+        }
+      }
+    }
+
+    // Go back to Step 1
+    function goToStep1() {
+      step2.classList.add("hidden");
+      step3.classList.add("hidden");
+      step1.classList.remove("hidden");
+      setStepIndicator(1);
+      window.scrollTo(0, 0);
+    }
+
+    // ===== EVENT LISTENERS =====
+
+    // Service dropdown change
+    serviceSelect.addEventListener("change", function () {
+      updateServiceInfo();
+    });
+
+    // Shift dropdown change
+    shiftSelect.addEventListener("change", function () {
+      document.getElementById("service-price").textContent = getPrice(serviceSelect.value);
+    });
+
+    // Step 1 → Step 2
+    nextBtn.addEventListener("click", function () {
+      if (!serviceSelect.value) return;
+      var key = serviceSelect.value;
+      var s = services[key];
+
+      // Fill in summary bar
+      if (s.hasShift) {
+        summaryService.textContent = s.name + " (" + shiftSelect.options[shiftSelect.selectedIndex].text + ")";
+      } else {
+        summaryService.textContent = s.name;
+      }
+      summaryPrice.textContent = " — " + getPrice(key);
+
+      step1.classList.add("hidden");
+      step2.classList.remove("hidden");
+      setStepIndicator(2);
+      window.scrollTo(0, 0);
+    });
+
+    // Back and Change buttons → Step 1
+    backBtn.addEventListener("click", goToStep1);
+    changeBtn.addEventListener("click", goToStep1);
+
+    // Step 2 → Step 3
+    toStep3Btn.addEventListener("click", function () {
+      // Check form validity
+      if (!bookingForm.checkValidity()) {
+        bookingForm.reportValidity();
+        return;
+      }
+
+      var key = serviceSelect.value;
+      var s = services[key];
+      var price = getPrice(key);
+
+      // Fill Step 3 summary
+      if (s.hasShift) {
+        document.getElementById("step3-summary-service").textContent = s.name + " (" + shiftSelect.options[shiftSelect.selectedIndex].text + ")";
+      } else {
+        document.getElementById("step3-summary-service").textContent = s.name;
+      }
+      document.getElementById("step3-price-text").textContent = price;
+
+      // Render nurse cards
+      renderNurses();
+
+      step2.classList.add("hidden");
+      step3.classList.remove("hidden");
+      setStepIndicator(3);
+      window.scrollTo(0, 0);
+    });
+
+    // Step 3 → Step 2
+    backToStep2Btn.addEventListener("click", function () {
+      step3.classList.add("hidden");
+      step2.classList.remove("hidden");
+      setStepIndicator(2);
+      window.scrollTo(0, 0);
+    });
+
+    // Confirm Booking
+    confirmNurseBtn.addEventListener("click", function () {
+      if (!selectedNurse) return;
+      confirmNurseBtn.disabled = true;
+      confirmNurseBtn.textContent = "Submitting...";
+
+      setTimeout(function () {
+        var key = serviceSelect.value;
+        var s = services[key];
+        var shiftText = s.hasShift ? shiftSelect.options[shiftSelect.selectedIndex].text : s.name;
+        successNurseInfo.textContent = "Your nurse: " + selectedNurse.name + " · " + shiftText;
+
+        bookingForm.reset();
+        step3.classList.add("hidden");
+        bookingSuccess.classList.remove("hidden");
+        stepIndicator.classList.add("hidden");
+
+        selectedNurse = null;
+        confirmNurseBtn.disabled = true;
+        confirmNurseBtn.textContent = "Confirm Booking";
+        window.scrollTo(0, 0);
+      }, 1200);
+    });
+
+    // Book Another
+    bookAnother.addEventListener("click", function () {
+      bookingSuccess.classList.add("hidden");
+      step1.classList.remove("hidden");
+      serviceSelect.value = "";
+      selectedNurse = null;
+      updateServiceInfo();
+      stepIndicator.classList.remove("hidden");
+      setStepIndicator(1);
+      window.scrollTo(0, 0);
+    });
+
+    // ===== URL PARAMETER (pre-select service) =====
+    var urlParams = new URLSearchParams(window.location.search);
+    var preService = urlParams.get("service");
+    if (preService && services[preService]) {
+      serviceSelect.value = preService;
+      updateServiceInfo();
+    }
+
+    // ===== MOBILE MENU =====
+    var hamburger = document.getElementById("hamburger");
+    var mobileMenu = document.getElementById("mobile-menu");
+
+    hamburger.addEventListener("click", function () {
+      if (mobileMenu.classList.contains("open")) {
+        mobileMenu.classList.remove("open");
+        hamburger.innerHTML = "&#9776;";
+      } else {
+        mobileMenu.classList.add("open");
+        hamburger.innerHTML = "&#10005;";
+      }
+    });
+
+    // ===== LOAD NURSE DATA =====
+    loadNurses();
+  </script>
+
+</body>
+</html>
